@@ -2,7 +2,7 @@
  * @kodepandai/flydrive
  *
  * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@kodepandai.ch>
+ * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
 import { v4 as uuid } from '@lukeed/uuid';

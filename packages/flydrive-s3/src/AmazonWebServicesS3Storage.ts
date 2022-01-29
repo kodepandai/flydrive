@@ -2,7 +2,7 @@
  * @kodepandai/flydrive
  *
  * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@kodepandai.ch>
+ * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
 import S3, { ClientConfiguration, ObjectList } from 'aws-sdk/clients/s3';
