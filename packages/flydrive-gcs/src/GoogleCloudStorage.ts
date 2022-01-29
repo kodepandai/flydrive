@@ -1,8 +1,8 @@
 /**
- * @slynova/flydrive
+ * @kodepandai/flydrive
  *
  * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
+ * @copyright Slynova - Romain Lanz <romain.lanz@kodepandai.ch>
  */
 
 import {
@@ -30,7 +30,7 @@ import {
 	UnknownException,
 	AuthorizationRequired,
 	WrongKeyPath,
-} from '@slynova/flydrive';
+} from '@kodepandai/flydrive';
 
 function handleError(err: Error & { code?: number | string }, path: string): Error {
 	switch (err.code) {

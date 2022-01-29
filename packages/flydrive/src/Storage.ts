@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**
- * @slynova/flydrive
+ * @kodepandai/flydrive
  *
  * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
+ * @copyright Slynova - Romain Lanz <romain.lanz@kodepandai.ch>
  */
 
 import { MethodNotSupported } from './exceptions';

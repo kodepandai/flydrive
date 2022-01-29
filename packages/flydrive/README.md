@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@slynova/flydrive"><img src="https://img.shields.io/npm/dm/@slynova/flydrive.svg?style=flat-square" alt="Download"></a>
-  <a href="https://www.npmjs.com/package/@slynova/flydrive"><img src="https://img.shields.io/npm/v/@slynova/flydrive.svg?style=flat-square" alt="Version"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/@slynova/flydrive.svg?style=flat-square" alt="License"></a>
+  <a href="https://www.npmjs.com/package/@kodepandai/flydrive"><img src="https://img.shields.io/npm/dm/@kodepandai/flydrive.svg?style=flat-square" alt="Download"></a>
+  <a href="https://www.npmjs.com/package/@kodepandai/flydrive"><img src="https://img.shields.io/npm/v/@kodepandai/flydrive.svg?style=flat-square" alt="Version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/@kodepandai/flydrive.svg?style=flat-square" alt="License"></a>
 </p>
 
 `flydrive` is a framework-agnostic package which provides a powerful wrapper to manage file Storage in [Node.js](https://nodejs.org).
@@ -14,10 +14,10 @@ There are currently 3 drivers available:
 
 - `'local'`: Stores files on the local file system.
 - `'s3'`: Amazon S3 and other compatible services
-  - You need to install the `@slynova/flydrive-s3` package to be able to use this driver.
+  - You need to install the `@kodepandai/flydrive-s3` package to be able to use this driver.
   - This driver is compatible with DigitalOcean Spaces and Scaleway Object Storage.
 - `'gcs'`: Google Cloud Storage
-  - You need to install the `@slynova/flydrive-gcs` package to be able to use this driver.
+  - You need to install the `@kodepandai/flydrive-gcs` package to be able to use this driver.
 
 ---
 
@@ -27,16 +27,16 @@ This package is available in the npm registry.
 It can easily be installed with `npm` or `yarn`.
 
 ```bash
-$ npm i @slynova/flydrive
+$ npm i @kodepandai/flydrive
 # or
-$ yarn add @slynova/flydrive
+$ yarn add @kodepandai/flydrive
 ```
 
 When you require the package in your file, it will give you access to the `StorageManager` class.
-This class is a facade for the package and should be instantiated with a [configuration object](https://github.com/Slynova-Org/flydrive/blob/master/test/stubs/config.ts).
+This class is a facade for the package and should be instantiated with a [configuration object](https://github.com/KodePandai/flydrive/blob/master/test/stubs/config.ts).
 
 ```javascript
-const { StorageManager } = require('@slynova/flydrive');
+const { StorageManager } = require('@kodepandai/flydrive');
 const storage = new StorageManager(...);
 ```
 
@@ -50,13 +50,13 @@ storage.disk('awsCloud', customConfig); // Overwrite the default configuration o
 
 ## Registering External Driver
 
-After installing any external driver, like `@slynova/flydrive-gcs`, you need to register it inside our manager to be able to use it.
+After installing any external driver, like `@kodepandai/flydrive-gcs`, you need to register it inside our manager to be able to use it.
 
 The following is done by using the method `storage.registerDriver(name: string, Driver)`.
 
 ```ts
-const { GoogleCloudStorage } = require('@slynova/flydrive-gcs');
-const { StorageManager } = require('@slynova/flydrive');
+const { GoogleCloudStorage } = require('@kodepandai/flydrive-gcs');
+const { StorageManager } = require('@kodepandai/flydrive');
 const storage = new StorageManager(...);
 
 storage.registerDriver('gcs', GoogleCloudStorage);
@@ -64,7 +64,7 @@ storage.registerDriver('gcs', GoogleCloudStorage);
 
 ## Driver's API
 
-Each driver extends the abstract class [`Storage`](https://github.com/Slynova-Org/flydrive/blob/master/src/Storage.ts). This class will throw an exception for each methods by default. The driver needs to overwrite the methods it supports.
+Each driver extends the abstract class [`Storage`](https://github.com/KodePandai/flydrive/blob/master/src/Storage.ts). This class will throw an exception for each methods by default. The driver needs to overwrite the methods it supports.
 
 The following method doesn't exist on the `LocalFileSystemStorage` driver, therefore, it will throw an exception.
 
@@ -76,7 +76,7 @@ storage.disk('local').getSignedUrl();
 Since we are using TypeScript, you can make use of casting to get the real interface:
 
 ```typescript
-import { LocalFileSystemStorage } from '@slynova/flydrive';
+import { LocalFileSystemStorage } from '@kodepandai/flydrive';
 
 storage.disk<LocalFileSystemStorage>('local');
 ```

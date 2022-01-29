@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@slynova/flydrive-gcs"><img src="https://img.shields.io/npm/dm/@slynova/flydrive-gcs.svg?style=flat-square" alt="Download"></a>
-  <a href="https://www.npmjs.com/package/@slynova/flydrive-gcs"><img src="https://img.shields.io/npm/v/@slynova/flydrive-gcs.svg?style=flat-square" alt="Version"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/@slynova/flydrive-gcs.svg?style=flat-square" alt="License"></a>
+  <a href="https://www.npmjs.com/package/@kodepandai/flydrive-gcs"><img src="https://img.shields.io/npm/dm/@kodepandai/flydrive-gcs.svg?style=flat-square" alt="Download"></a>
+  <a href="https://www.npmjs.com/package/@kodepandai/flydrive-gcs"><img src="https://img.shields.io/npm/v/@kodepandai/flydrive-gcs.svg?style=flat-square" alt="Version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/@kodepandai/flydrive-gcs.svg?style=flat-square" alt="License"></a>
 </p>
 
 `flydrive` is a framework-agnostic package which provides a powerful wrapper to manage file Storage in [Node.js](https://nodejs.org).
@@ -20,14 +20,14 @@ This package is available in the npm registry.
 It can easily be installed with `npm` or `yarn`.
 
 ```bash
-$ npm i @slynova/flydrive-gcs
+$ npm i @kodepandai/flydrive-gcs
 # or
-$ yarn add @slynova/flydrive-gcs
+$ yarn add @kodepandai/flydrive-gcs
 ```
 
 ```javascript
-const { GoogleCloudStorage } = require('@slynova/flydrive-gcs');
-const { StorageManager } = require('@slynova/flydrive');
+const { GoogleCloudStorage } = require('@kodepandai/flydrive-gcs');
+const { StorageManager } = require('@kodepandai/flydrive');
 const storage = new StorageManager({
   // ...
 

@@ -1,8 +1,8 @@
 /**
- * @slynova/flydrive
+ * @kodepandai/flydrive
  *
  * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
+ * @copyright Slynova - Romain Lanz <romain.lanz@kodepandai.ch>
  */
 
 import S3, { ClientConfiguration, ObjectList } from 'aws-sdk/clients/s3';
@@ -20,7 +20,7 @@ import {
 	StatResponse,
 	FileListResponse,
 	DeleteResponse,
-} from '@slynova/flydrive';
+} from '@kodepandai/flydrive';
 
 function handleError(err: Error, path: string, bucket: string): Error {
 	switch (err.name) {

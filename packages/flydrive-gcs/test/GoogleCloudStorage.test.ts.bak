@@ -1,13 +1,13 @@
 /**
- * @slynova/flydrive
+ * @kodepandai/flydrive
  *
  * @license MIT
- * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
+ * @copyright Slynova - Romain Lanz <romain.lanz@kodepandai.ch>
  */
 
 import { v4 as uuid } from '@lukeed/uuid';
 import { Storage } from '@google-cloud/storage';
-import { FileNotFound } from '@slynova/flydrive';
+import { FileNotFound } from '@kodepandai/flydrive';
 
 import { GoogleCloudStorage } from '../src/GoogleCloudStorage';
 import { streamToString, getFlatList } from '../../../test/utils';
