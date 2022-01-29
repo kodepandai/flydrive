@@ -5,7 +5,7 @@
  * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
-import S3, { ClientConfiguration, ObjectList } from 'aws-sdk/clients/s3';
+import S3, { ClientConfiguration, ManagedUpload, ObjectList, PutObjectRequest } from 'aws-sdk/clients/s3';
 import {
 	Storage,
 	UnknownException,
@@ -215,8 +215,13 @@ export class AmazonWebServicesS3Storage extends Storage {
 	 * Creates a new file.
 	 * This method will create missing directories on the fly.
 	 */
-	public async put(location: string, content: Buffer | NodeJS.ReadableStream | string): Promise<Response> {
-		const params = { Key: location, Body: content, Bucket: this.$bucket };
+	public async put(location: string, content: Buffer | NodeJS.ReadableStream | string, option: Partial<PutObjectRequest> = {}): Promise<Response> {
+		const params = { 
+			Key: location, 
+			Body: content, 
+			Bucket: this.$bucket,
+			...option
+	};
 		try {
 			const result = await this.$driver.upload(params).promise();
 			return { raw: result };

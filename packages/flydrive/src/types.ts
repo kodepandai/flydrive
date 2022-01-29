@@ -68,3 +68,7 @@ export interface FileListResponse extends Response {
 export interface DeleteResponse extends Response {
 	wasDeleted: boolean | null;
 }
+
+export interface ObjectOf<T=any> {
+	[key:string]:T
+}

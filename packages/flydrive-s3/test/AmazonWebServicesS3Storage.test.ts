@@ -134,4 +134,12 @@ describe('S3 Driver', () => {
 
 		expect(url).toStrictEqual(fileURL('dummy-file1.txt'));
 	});
+
+	test('can put file with custom content type', async ()=>{
+		await storage.put('dummy-image.webp', testString, {
+			ContentType: 'image/webp'
+		})
+		const {content} = await storage.get('dummy-image.webp');
+		expect(content).toStrictEqual(testString);
+	})
 });

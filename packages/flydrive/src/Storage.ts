@@ -6,6 +6,7 @@
  * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
+import { ObjectOf } from '.';
 import { MethodNotSupported } from './exceptions';
 import {
 	Response,
@@ -138,7 +139,7 @@ export default abstract class Storage {
 	 *
 	 * Supported drivers: "local", "s3", "gcs"
 	 */
-	put(location: string, content: Buffer | NodeJS.ReadableStream | string): Promise<Response> {
+	put(location: string, content: Buffer | NodeJS.ReadableStream | string, option?: ObjectOf): Promise<Response> {
 		throw new MethodNotSupported('put', this.constructor.name);
 	}
 
