@@ -1,6 +1,6 @@
 {
   "name": "@kodepandai/flydrive-s3",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "AWS S3 driver for @kodepandai/flydrive",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
@@ -35,7 +35,7 @@
     "@kodepandai/flydrive": "^1.0.3"
   },
   "devDependencies": {
-    "@kodepandai/flydrive": "^1.0.4",
+    "@kodepandai/flydrive": "^1.1.0",
     "@types/fs-extra": "^9.0.7",
     "fs-extra": "^9.1.0"
   },

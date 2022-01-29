@@ -1,6 +1,6 @@
 {
   "name": "@kodepandai/flydrive",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Flexible and Fluent way to manage storage in Node.js.",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
