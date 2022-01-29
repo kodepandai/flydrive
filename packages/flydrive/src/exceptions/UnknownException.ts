@@ -12,7 +12,7 @@ export class UnknownException extends RuntimeException {
 	constructor(err: Error, errorCode: string, path: string) {
 		super(
 			`An unknown error happened with the file ${path}.
-Please open an issue at https://github.com/Slynova-Org/flydrive/issues
+Please open an issue at https://github.com/kodepandai/flydrive/issues
 
 Error code: ${errorCode}
 Original stack:

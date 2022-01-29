@@ -66,7 +66,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 		try {
 			const result = await this.$driver.copyObject(params).promise();
 			return { raw: result };
-		} catch (e) {
+		} catch (e: any) {
 			throw handleError(e, src, this.$bucket);
 		}
 	}
@@ -81,7 +81,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 			const result = await this.$driver.deleteObject(params).promise();
 			// Amazon does not inform the client if anything was deleted.
 			return { raw: result, wasDeleted: null };
-		} catch (e) {
+		} catch (e: any) {
 			throw handleError(e, location, this.$bucket);
 		}
 	}
@@ -102,7 +102,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 		try {
 			const result = await this.$driver.headObject(params).promise();
 			return { exists: true, raw: result };
-		} catch (e) {
+		} catch (e: any) {
 			if (e.statusCode === 404) {
 				return { exists: false, raw: e };
 			} else {
@@ -135,7 +135,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 			const body = result.Body as Buffer;
 
 			return { content: body, raw: result };
-		} catch (e) {
+		} catch (e: any) {
 			throw handleError(e, location, this.$bucket);
 		}
 	}
@@ -155,7 +155,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 
 			const result = await this.$driver.getSignedUrlPromise('getObject', params);
 			return { signedUrl: result, raw: result };
-		} catch (e) {
+		} catch (e: any) {
 			throw handleError(e, location, this.$bucket);
 		}
 	}
@@ -173,7 +173,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 				modified: result.LastModified as Date,
 				raw: result,
 			};
-		} catch (e) {
+		} catch (e: any) {
 			throw handleError(e, location, this.$bucket);
 		}
 	}
@@ -220,7 +220,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 		try {
 			const result = await this.$driver.upload(params).promise();
 			return { raw: result };
-		} catch (e) {
+		} catch (e: any) {
 			throw handleError(e, location, this.$bucket);
 		}
 	}
@@ -250,7 +250,7 @@ export class AmazonWebServicesS3Storage extends Storage {
 						path: file.Key as string,
 					};
 				}
-			} catch (e) {
+			} catch (e: any) {
 				throw handleError(e, prefix, this.$bucket);
 			}
 		} while (continuationToken);

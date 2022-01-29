@@ -18,12 +18,16 @@ const config: AmazonWebServicesS3StorageConfig = {
 	secret: process.env.S3_SECRET || '',
 	bucket: process.env.S3_BUCKET || '',
 	region: process.env.S3_REGION || '',
+	s3ForcePathStyle: process.env.S3_FORCE_PATH_STYLE=='true'? true: false ,
+
 };
 
 const storage = new AmazonWebServicesS3Storage(config);
 
 function fileURL(KEY: string): string {
-	return `https://${(storage.driver() as S3).endpoint.host}/${process.env.S3_BUCKET}/${KEY}`;
+	const {S3_ENDPOINT, S3_BUCKET} = process.env
+	const protocol = S3_ENDPOINT?.startsWith('https')?'https':'http';
+	return `${protocol}://${(storage.driver() as S3).endpoint.host}/${S3_BUCKET}/${KEY}`;
 }
 
 const testString = 'test-data';
@@ -63,7 +67,7 @@ describe('S3 Driver', () => {
 		try {
 			const storage = new AmazonWebServicesS3Storage({ ...config, bucket: 'wrong' });
 			await storage.put('dummy-file.txt', testString);
-		} catch (error) {
+		} catch (error: any) {
 			expect(error).toBeInstanceOf(NoSuchBucket);
 		}
 	});
@@ -98,7 +102,7 @@ describe('S3 Driver', () => {
 
 		try {
 			await storage.get('bad.txt');
-		} catch (error) {
+		} catch (error: any) {
 			expect(error).toBeInstanceOf(FileNotFound);
 		}
 	});

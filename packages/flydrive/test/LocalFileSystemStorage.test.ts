@@ -76,7 +76,7 @@ describe('Local Driver', () => {
 
 			const { exists } = await storage.exists('i_will_be_deleted');
 			expect(exists).toBe(false);
-		} catch (error) {
+		} catch (error: any) {
 			if (!isWindowsDefenderError(error)) {
 				throw error;
 			}
@@ -138,7 +138,7 @@ describe('Local Driver', () => {
 
 		try {
 			await storage.get('non_existing', 'utf-8');
-		} catch (error) {
+		} catch (error: any) {
 			expect(error).toBeInstanceOf(CE.FileNotFound);
 		}
 	});
