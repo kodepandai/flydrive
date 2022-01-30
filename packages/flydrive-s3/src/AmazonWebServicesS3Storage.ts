@@ -10,7 +10,7 @@ import type {
   ObjectList,
   PutObjectRequest,
 } from "aws-sdk/clients/s3";
-import { S3 } from "aws-sdk";
+import S3 from "aws-sdk/clients/s3";
 import {
   Storage,
   UnknownException,

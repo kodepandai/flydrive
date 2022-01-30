@@ -26,7 +26,6 @@
     "build"
   ],
   "scripts": {
-    "prepare": "tsc -b tsconfig.json"
   },
   "dependencies": {
     "aws-sdk": "^2.852.0"
@@ -48,5 +47,6 @@
   },
   "bugs": {
     "url": "https://github.com/KodePandai/flydrive/issues"
-  }
+  },
+  "type": "module"
 }

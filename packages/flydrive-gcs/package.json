@@ -24,7 +24,6 @@
     "build"
   ],
   "scripts": {
-    "prepare": "tsc -b tsconfig.json"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.0"
@@ -45,5 +44,6 @@
   },
   "bugs": {
     "url": "https://github.com/KodePandai/flydrive/issues"
-  }
+  },
+  "type": "module"
 }

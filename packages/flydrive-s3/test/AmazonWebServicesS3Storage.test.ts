@@ -9,6 +9,8 @@ import fs from "fs-extra";
 import type S3 from "aws-sdk/clients/s3";
 import { NoSuchBucket, FileNotFound } from "../../flydrive/src";
 
+jest.mock("@kodepandai/flydrive", (()=>require("../../flydrive/src")));
+
 import {
   AmazonWebServicesS3Storage,
   AmazonWebServicesS3StorageConfig,
