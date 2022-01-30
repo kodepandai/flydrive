@@ -10,7 +10,7 @@ import type {
   ObjectList,
   PutObjectRequest,
 } from "aws-sdk/clients/s3";
-import type { S3 } from "aws-sdk";
+import { S3 } from "aws-sdk";
 import {
   Storage,
   UnknownException,
@@ -25,7 +25,7 @@ import {
   StatResponse,
   FileListResponse,
   DeleteResponse,
-} from "../../flydrive/src";
+} from "@kodepandai/flydrive";
 
 function handleError(err: Error, path: string, bucket: string): Error {
   switch (err.name) {
@@ -46,9 +46,6 @@ export class AmazonWebServicesS3Storage extends Storage {
 
   constructor(config: AmazonWebServicesS3StorageConfig) {
     super();
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const S3 = require("aws-sdk/clients/s3");
-
     this.$driver = new S3({
       accessKeyId: config.key,
       secretAccessKey: config.secret,

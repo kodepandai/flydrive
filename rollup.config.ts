@@ -20,4 +20,21 @@ export default [
     ],
     external: ["fs-extra", "fs", "path", "util", "stream", "node-exceptions"],
   },
+  {
+    input: "packages/flydrive-s3/src/index.ts",
+    output: {
+      dir: "packages/flydrive-s3/build",
+      format: "esm",
+    },
+    plugins: [
+      ts({
+        declaration: true,
+        rootDir: "packages/flydrive-s3/src",
+        outDir: "packages/flydrive-s3/build",
+        sourceMap: false,
+      }),
+      production && terser(),
+    ],
+    external: ["fs-extra", "fs", "path", "util", "stream", "node-exceptions", "aws-sdk", "@kodepandai/flydrive"],
+  },
 ];
