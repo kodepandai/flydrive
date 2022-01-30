@@ -20,6 +20,7 @@
   ],
   "author": "Romain Lanz <romain.lanz@slynova.ch>",
   "contributors": [
+    "Akhmad Salafudin <axmad386@gmail.com>",
     "Harminder Virk <virk@adonisjs.com>",
     "Michaël Zasso <targos@pm.me>"
   ],
@@ -27,7 +28,6 @@
     "build"
   ],
   "scripts": {
-    "prepare": "tsc -b tsconfig.json"
   },
   "dependencies": {
     "fs-extra": "^9.1.0",
@@ -45,5 +45,6 @@
   },
   "bugs": {
     "url": "https://github.com/KodePandai/flydrive/issues"
-  }
+  },
+  "type": "module"
 }

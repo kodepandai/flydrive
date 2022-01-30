@@ -5,4 +5,4 @@
  * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
-export * from './AmazonWebServicesS3Storage';
+export * from "./AmazonWebServicesS3Storage";

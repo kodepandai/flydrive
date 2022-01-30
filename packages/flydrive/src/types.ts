@@ -5,70 +5,70 @@
  * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
-import { LocalFileSystemStorageConfig } from './LocalFileSystemStorage';
+import type { LocalFileSystemStorageConfig } from "./LocalFileSystemStorage";
 
 export type { LocalFileSystemStorageConfig };
 
 export type StorageManagerSingleDiskConfig =
-	| {
-			driver: 'local';
-			config: LocalFileSystemStorageConfig;
-	  }
-	| {
-			driver: string;
-			config: unknown;
-	  };
+  | {
+      driver: "local";
+      config: LocalFileSystemStorageConfig;
+    }
+  | {
+      driver: string;
+      config: unknown;
+    };
 
 export interface StorageManagerDiskConfig {
-	[key: string]: StorageManagerSingleDiskConfig;
+  [key: string]: StorageManagerSingleDiskConfig;
 }
 
 export interface StorageManagerConfig {
-	/**
-	 * The default disk returned by `disk()`.
-	 */
-	default?: string;
-	disks?: StorageManagerDiskConfig;
+  /**
+   * The default disk returned by `disk()`.
+   */
+  default?: string;
+  disks?: StorageManagerDiskConfig;
 }
 
 export interface Response {
-	raw: unknown;
+  raw: unknown;
 }
 
 export interface ExistsResponse extends Response {
-	exists: boolean;
+  exists: boolean;
 }
 
 export interface ContentResponse<ContentType> extends Response {
-	content: ContentType;
+  content: ContentType;
 }
 
 export interface SignedUrlOptions {
-	/**
-	 * Expiration time of the URL.
-	 * It should be a number of seconds from now.
-	 * @default `900` (15 minutes)
-	 */
-	expiry?: number;
+  /**
+   * Expiration time of the URL.
+   * It should be a number of seconds from now.
+   * @default `900` (15 minutes)
+   */
+  expiry?: number;
 }
 
 export interface SignedUrlResponse extends Response {
-	signedUrl: string;
+  signedUrl: string;
 }
 
 export interface StatResponse extends Response {
-	size: number;
-	modified: Date;
+  size: number;
+  modified: Date;
 }
 
 export interface FileListResponse extends Response {
-	path: string;
+  path: string;
 }
 
 export interface DeleteResponse extends Response {
-	wasDeleted: boolean | null;
+  wasDeleted: boolean | null;
 }
 
-export interface ObjectOf<T=any> {
-	[key:string]:T
+export interface ObjectOf<T = any> {
+  [key: string]: T;
 }
