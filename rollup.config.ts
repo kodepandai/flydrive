@@ -37,4 +37,21 @@ export default [
     ],
     external: ["fs-extra", "fs", "path", "util", "stream", "node-exceptions", "aws-sdk", "@kodepandai/flydrive"],
   },
+  {
+    input: "packages/flydrive-gcs/src/index.ts",
+    output: {
+      dir: "packages/flydrive-gcs/build",
+      format: "esm",
+    },
+    plugins: [
+      ts({
+        declaration: true,
+        rootDir: "packages/flydrive-gcs/src",
+        outDir: "packages/flydrive-gcs/build",
+        sourceMap: false,
+      }),
+      production && terser(),
+    ],
+    external: ["fs-extra", "fs", "path", "util", "stream", "node-exceptions", "@google-cloud/storage", "@kodepandai/flydrive"],
+  },
 ];
