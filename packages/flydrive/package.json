@@ -1,6 +1,6 @@
 {
   "name": "@kodepandai/flydrive",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Flexible and Fluent way to manage storage in Node.js.",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
@@ -27,8 +27,7 @@
   "files": [
     "build"
   ],
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
     "fs-extra": "^9.1.0",
     "node-exceptions": "^4.0.1"
