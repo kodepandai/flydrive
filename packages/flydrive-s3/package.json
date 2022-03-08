@@ -31,7 +31,7 @@
     "aws-sdk": "^2.852.0"
   },
   "peerDependencies": {
-    "@kodepandai/flydrive": "^1.0.3"
+    "@kodepandai/flydrive": "^2"
   },
   "devDependencies": {
     "@kodepandai/flydrive": "^2.0.0",

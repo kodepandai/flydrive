@@ -9,8 +9,8 @@ import type {
   ClientConfiguration,
   ObjectList,
   PutObjectRequest,
-} from "aws-sdk/clients/s3";
-import S3 from "aws-sdk/clients/s3";
+} from "aws-sdk/clients/s3.js";
+import S3 from "aws-sdk/clients/s3.js";
 import {
   Storage,
   UnknownException,

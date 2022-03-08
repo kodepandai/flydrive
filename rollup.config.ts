@@ -35,7 +35,7 @@ export default [
       }),
       production && terser(),
     ],
-    external: ["fs-extra", "fs", "path", "util", "stream", "node-exceptions", "aws-sdk/clients/s3", "@kodepandai/flydrive"],
+    external: ["fs-extra", "fs", "path", "util", "stream", "node-exceptions", "aws-sdk/clients/s3.js", "@kodepandai/flydrive"],
   },
   {
     input: "packages/flydrive-gcs/src/index.ts",
