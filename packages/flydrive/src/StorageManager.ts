@@ -6,7 +6,7 @@
  */
 
 import { LocalFileSystemStorage } from "./LocalFileSystemStorage";
-import type Storage from "./Storage";
+import type { StorageInstance } from "./Storage";
 import { InvalidConfig, DriverNotSupported } from "./exceptions";
 import type {
   StorageManagerConfig,
@@ -14,7 +14,7 @@ import type {
   StorageManagerSingleDiskConfig,
 } from "./types";
 
-interface StorageConstructor<T extends Storage = Storage> {
+interface StorageConstructor<T = StorageInstance> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   new (...args: any[]): T;
 }
@@ -33,12 +33,13 @@ export default class StorageManager {
   /**
    * Instantiated disks.
    */
-  private _disks: Map<string, Storage> = new Map();
+  private _disks: Map<string, StorageInstance> = new Map();
 
   /**
    * List of available drivers.
    */
-  private _drivers: Map<string, StorageConstructor<Storage>> = new Map();
+  private _drivers: Map<string, StorageConstructor<StorageInstance>> =
+    new Map();
 
   constructor(config: StorageManagerConfig) {
     this.defaultDisk = config.default;
@@ -49,21 +50,21 @@ export default class StorageManager {
   /**
    * Get the instantiated disks
    */
-  getDisks(): Map<string, Storage> {
+  getDisks(): Map<string, StorageInstance> {
     return this._disks;
   }
 
   /**
    * Get the registered drivers
    */
-  getDrivers(): Map<string, StorageConstructor<Storage>> {
+  getDrivers(): Map<string, StorageConstructor<StorageInstance>> {
     return this._drivers;
   }
 
   /**
    * Get a disk instance.
    */
-  disk<T extends Storage = Storage>(name?: string): T {
+  disk<T = StorageInstance>(name?: string): T {
     name = name || this.defaultDisk;
 
     /**
@@ -75,7 +76,7 @@ export default class StorageManager {
     }
 
     if (this._disks.has(name)) {
-      return this._disks.get(name) as T;
+      return this._disks.get(name) as unknown as T;
     }
 
     const diskConfig = this.disksConfig[name];
@@ -101,7 +102,7 @@ export default class StorageManager {
 
     const disk = new Driver(diskConfig.config);
     this._disks.set(name, disk);
-    return disk as T;
+    return disk as unknown as T;
   }
 
   addDisk(name: string, config: StorageManagerSingleDiskConfig): void {
@@ -114,7 +115,7 @@ export default class StorageManager {
   /**
    * Register a custom driver.
    */
-  public registerDriver<T extends Storage>(
+  public registerDriver<T extends StorageInstance>(
     name: string,
     driver: StorageConstructor<T>
   ): void {

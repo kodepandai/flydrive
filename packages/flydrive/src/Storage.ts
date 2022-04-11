@@ -168,3 +168,5 @@ export default abstract class Storage {
     throw new MethodNotSupported("flatList", this.constructor.name);
   }
 }
+
+export class StorageInstance extends Storage {}
