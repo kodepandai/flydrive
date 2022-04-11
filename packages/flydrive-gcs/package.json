@@ -29,7 +29,7 @@
     "@google-cloud/storage": "^5.8.0"
   },
   "peerDependencies": {
-    "@kodepandai/flydrive": "^2"
+    "@kodepandai/flydrive": "^2.0.1"
   },
   "devDependencies": {
     "@kodepandai/flydrive": "^2.0.1",
