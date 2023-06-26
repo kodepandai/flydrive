@@ -1,6 +1,6 @@
 {
   "name": "@kodepandai/flydrive",
-  "version": "2.0.1",
+  "version": "3.0.0-next",
   "description": "Flexible and Fluent way to manage storage in Node.js.",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
@@ -28,7 +28,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "NODE_ENV=production rollup -c"
+    "build": "NODE_ENV=production rollup -c",
+    "test": "vitest"
   },
   "dependencies": {
     "fs-extra": "^9.1.0",
