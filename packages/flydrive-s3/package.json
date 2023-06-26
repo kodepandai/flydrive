@@ -4,8 +4,8 @@
   "description": "AWS S3 driver for @kodepandai/flydrive",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "keywords": [
     "storage",
     "filesystem",
@@ -24,9 +24,11 @@
     "Michaël Zasso <targos@pm.me>"
   ],
   "files": [
-    "build"
+    "dist"
   ],
-  "scripts": {},
+  "scripts": {
+    "build": "NODE_ENV=production rollup -c"
+  },
   "dependencies": {
     "aws-sdk": "^2.852.0"
   },
