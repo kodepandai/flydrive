@@ -5,12 +5,21 @@
  * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
-import type {
-  ClientConfiguration,
-  ObjectList,
+import {
+  S3ClientConfig,
+  S3Client,
+  HeadObjectCommand,
+  NotFound,
   PutObjectRequest,
-} from "aws-sdk/clients/s3.js";
-import S3 from "aws-sdk/clients/s3.js";
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectCommand,
+  GetObjectOutput,
+  CopyObjectCommand,
+  ListObjectsCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import type { SdkStream } from "@aws-sdk/types";
 import {
   Storage,
   UnknownException,
@@ -26,12 +35,14 @@ import {
   FileListResponse,
   DeleteResponse,
 } from "@kodepandai/flydrive";
+import { Buffer } from "buffer";
 
 function handleError(err: Error, path: string, bucket: string): Error {
   switch (err.name) {
     case "NoSuchBucket":
       return new NoSuchBucket(err, bucket);
     case "NoSuchKey":
+    case "FileNotFound":
       return new FileNotFound(err, path);
     case "AllAccessDisabled":
       return new PermissionMissing(err, path);
@@ -41,32 +52,34 @@ function handleError(err: Error, path: string, bucket: string): Error {
 }
 
 export class AmazonWebServicesS3Storage extends Storage {
-  protected $driver: S3;
+  protected $driver: any;
   protected $bucket: string;
 
-  constructor(config: AmazonWebServicesS3StorageConfig) {
+  constructor(protected $config: AmazonWebServicesS3StorageConfig) {
     super();
-    this.$driver = new S3({
-      accessKeyId: config.key,
-      secretAccessKey: config.secret,
-      ...config,
+    this.$driver = new S3Client({
+      credentials: {
+        accessKeyId: $config.key,
+        secretAccessKey: $config.secret,
+      },
+      ...$config,
     });
 
-    this.$bucket = config.bucket;
+    this.$bucket = $config.bucket;
   }
 
   /**
    * Copy a file to a location.
    */
   public async copy(src: string, dest: string): Promise<Response> {
-    const params = {
+    const command = new CopyObjectCommand({
       Key: dest,
       Bucket: this.$bucket,
       CopySource: `/${this.$bucket}/${src}`,
-    };
+    });
 
     try {
-      const result = await this.$driver.copyObject(params).promise();
+      const result = await this.$driver.send(command);
       return { raw: result };
     } catch (e: any) {
       throw handleError(e, src, this.$bucket);
@@ -77,10 +90,13 @@ export class AmazonWebServicesS3Storage extends Storage {
    * Delete existing file.
    */
   public async delete(location: string): Promise<DeleteResponse> {
-    const params = { Key: location, Bucket: this.$bucket };
+    const command = new DeleteObjectCommand({
+      Key: location,
+      Bucket: this.$bucket,
+    });
 
     try {
-      const result = await this.$driver.deleteObject(params).promise();
+      const result = await this.$driver.send(command);
       // Amazon does not inform the client if anything was deleted.
       return { raw: result, wasDeleted: null };
     } catch (e: any) {
@@ -91,7 +107,7 @@ export class AmazonWebServicesS3Storage extends Storage {
   /**
    * Returns the driver.
    */
-  public driver(): S3 {
+  public driver(): S3Client {
     return this.$driver;
   }
 
@@ -99,13 +115,16 @@ export class AmazonWebServicesS3Storage extends Storage {
    * Determines if a file or folder already exists.
    */
   public async exists(location: string): Promise<ExistsResponse> {
-    const params = { Key: location, Bucket: this.$bucket };
+    const command = new HeadObjectCommand({
+      Key: location,
+      Bucket: this.$bucket,
+    });
 
     try {
-      const result = await this.$driver.headObject(params).promise();
+      const result = await this.$driver.send(command);
       return { exists: true, raw: result };
     } catch (e: any) {
-      if (e.statusCode === 404) {
+      if (e instanceof NotFound) {
         return { exists: false, raw: e };
       } else {
         throw handleError(e, location, this.$bucket);
@@ -127,19 +146,46 @@ export class AmazonWebServicesS3Storage extends Storage {
     };
   }
 
+  private async getObject(
+    location: string
+  ): Promise<ContentResponse<SdkStream<GetObjectOutput["Body"]>>> {
+    const command = new GetObjectCommand({
+      Key: location,
+      Bucket: this.$bucket,
+    });
+
+    try {
+      const result = await this.$driver.send(command);
+      const body = result.Body;
+      if (!body) {
+        throw new FileNotFound(
+          new Error("GetObjectOuptput Body is empty"),
+          location
+        );
+      }
+      return { content: body, raw: result };
+    } catch (e: any) {
+      throw handleError(e, location, this.$bucket);
+    }
+  }
+
+  public async getStream(location: string): Promise<NodeJS.ReadableStream> {
+    const { content } = await this.getObject(location);
+    return content as NodeJS.ReadableStream;
+  }
+
   /**
    * Returns the file contents as Buffer.
    */
   public async getBuffer(location: string): Promise<ContentResponse<Buffer>> {
-    const params = { Key: location, Bucket: this.$bucket };
-
     try {
-      const result = await this.$driver.getObject(params).promise();
+      const { content, raw } = await this.getObject(location);
 
-      // S3.getObject returns a Buffer in Node.js
-      const body = result.Body as Buffer;
-
-      return { content: body, raw: result };
+      // convert stream to Buffer
+      return {
+        content: Buffer.from(await content.transformToByteArray()),
+        raw,
+      };
     } catch (e: any) {
       throw handleError(e, location, this.$bucket);
     }
@@ -153,18 +199,14 @@ export class AmazonWebServicesS3Storage extends Storage {
     options: SignedUrlOptions = {}
   ): Promise<SignedUrlResponse> {
     const { expiry = 900 } = options;
-
+    const command = new GetObjectCommand({
+      Bucket: this.$bucket,
+      Key: location,
+    });
     try {
-      const params = {
-        Key: location,
-        Bucket: this.$bucket,
-        Expires: expiry,
-      };
-
-      const result = await this.$driver.getSignedUrlPromise(
-        "getObject",
-        params
-      );
+      const result = await getSignedUrl(this.$driver, command, {
+        expiresIn: expiry,
+      });
       return { signedUrl: result, raw: result };
     } catch (e: any) {
       throw handleError(e, location, this.$bucket);
@@ -175,10 +217,13 @@ export class AmazonWebServicesS3Storage extends Storage {
    * Returns file's size and modification date.
    */
   public async getStat(location: string): Promise<StatResponse> {
-    const params = { Key: location, Bucket: this.$bucket };
+    const command = new HeadObjectCommand({
+      Key: location,
+      Bucket: this.$bucket,
+    });
 
     try {
-      const result = await this.$driver.headObject(params).promise();
+      const result = await this.$driver.send(command);
       return {
         size: result.ContentLength as number,
         modified: result.LastModified as Date,
@@ -190,19 +235,10 @@ export class AmazonWebServicesS3Storage extends Storage {
   }
 
   /**
-   * Returns the stream for the given file.
-   */
-  public getStream(location: string): NodeJS.ReadableStream {
-    const params = { Key: location, Bucket: this.$bucket };
-
-    return this.$driver.getObject(params).createReadStream();
-  }
-
-  /**
    * Returns url for a given key.
    */
   public getUrl(location: string): string {
-    const { href } = this.$driver.endpoint;
+    const { href } = new URL(this.$config.endpoint?.toString() || "");
 
     if (href.startsWith("https://s3.amazonaws")) {
       return `https://${this.$bucket}.s3.amazonaws.com/${location}`;
@@ -231,14 +267,14 @@ export class AmazonWebServicesS3Storage extends Storage {
     content: Buffer | NodeJS.ReadableStream | string,
     option: Partial<PutObjectRequest> = {}
   ): Promise<Response> {
-    const params = {
+    const command = new PutObjectCommand({
       Key: location,
       Body: content,
       Bucket: this.$bucket,
       ...option,
-    };
+    });
     try {
-      const result = await this.$driver.upload(params).promise();
+      const result = await this.$driver.send(command);
       return { raw: result };
     } catch (e: any) {
       throw handleError(e, location, this.$bucket);
@@ -250,34 +286,36 @@ export class AmazonWebServicesS3Storage extends Storage {
    */
   public async *flatList(prefix = ""): AsyncIterable<FileListResponse> {
     let continuationToken: string | undefined;
+    let hasContent = true;
 
+    const command = new ListObjectsCommand({
+      Bucket: this.$bucket,
+      Prefix: prefix,
+      Marker: continuationToken,
+      MaxKeys: 1000,
+    });
     do {
       try {
-        const response = await this.$driver
-          .listObjectsV2({
-            Bucket: this.$bucket,
-            Prefix: prefix,
-            ContinuationToken: continuationToken,
-            MaxKeys: 1000,
-          })
-          .promise();
+        const response = await this.$driver.send(command);
 
-        continuationToken = response.NextContinuationToken;
-
-        for (const file of response.Contents as ObjectList) {
-          yield {
-            raw: file,
-            path: file.Key as string,
-          };
+        continuationToken = response.NextMarker;
+        hasContent = (response.Contents?.length || 0) > 0;
+        if (response.Contents && hasContent) {
+          for (const file of response.Contents) {
+            yield {
+              raw: file,
+              path: file.Key as string,
+            };
+          }
         }
       } catch (e: any) {
         throw handleError(e, prefix, this.$bucket);
       }
-    } while (continuationToken);
+    } while (continuationToken && hasContent);
   }
 }
 
-export interface AmazonWebServicesS3StorageConfig extends ClientConfiguration {
+export interface AmazonWebServicesS3StorageConfig extends S3ClientConfig {
   key: string;
   secret: string;
   bucket: string;

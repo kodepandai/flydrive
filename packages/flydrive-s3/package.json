@@ -31,12 +31,14 @@
     "test": "vitest"
   },
   "dependencies": {
-    "aws-sdk": "^2.852.0"
+    "@aws-sdk/client-s3": "^3.359.0",
+    "@aws-sdk/s3-request-presigner": "^3.360.0"
   },
   "peerDependencies": {
     "@kodepandai/flydrive": "workspace:3.0.0-next"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.357.0",
     "@kodepandai/flydrive": "workspace:3.0.0-next",
     "@types/fs-extra": "^9.0.7",
     "fs-extra": "^9.1.0"

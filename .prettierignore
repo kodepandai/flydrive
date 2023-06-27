@@ -3,3 +3,4 @@ lerna.json
 tsconfig*.json
 *.md
 pnpm-lock.yaml
+**/dist/
