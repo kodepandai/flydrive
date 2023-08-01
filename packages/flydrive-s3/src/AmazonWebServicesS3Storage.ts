@@ -34,12 +34,14 @@ import {
   StatResponse,
   FileListResponse,
   DeleteResponse,
+  WrongKeyPath,
 } from "@kodepandai/flydrive";
 import { Buffer } from "buffer";
 
 function handleError(err: Error, path: string, bucket: string): Error {
   switch (err.name) {
     case "NoSuchBucket":
+    case "PermanentRedirect":
       return new NoSuchBucket(err, bucket);
     case "NoSuchKey":
     case "FileNotFound":
@@ -127,6 +129,7 @@ export class AmazonWebServicesS3Storage extends Storage {
       if (e instanceof NotFound) {
         return { exists: false, raw: e };
       } else {
+        console.log("ixxx", e);
         throw handleError(e, location, this.$bucket);
       }
     }
@@ -238,13 +241,23 @@ export class AmazonWebServicesS3Storage extends Storage {
    * Returns url for a given key.
    */
   public getUrl(location: string): string {
-    const { href } = new URL(this.$config.endpoint?.toString() || "");
+    const {
+      endpoint: configEndpoint,
+      bucket,
+      forcePathStyle,
+      region,
+    } = this.$config;
+    const awsHost = region ? `s3.${region}.amazonaws.com` : "s3.amazonaws.com";
+    let endpoint = (configEndpoint as string) || `https:${awsHost}`;
+    endpoint = endpoint.replace(bucket, "");
+    const { href, protocol, host } = new URL(endpoint);
 
-    if (href.startsWith("https://s3.amazonaws")) {
-      return `https://${this.$bucket}.s3.amazonaws.com/${location}`;
+    if (href.includes("amazonaws.com")) {
+      if (!forcePathStyle) {
+        return `${protocol}//${bucket}.${host}/${location}`;
+      }
     }
-
-    return `${href}${this.$bucket}/${location}`;
+    return `${protocol}//${host}/${bucket}/${location}`;
   }
 
   /**
@@ -285,6 +298,11 @@ export class AmazonWebServicesS3Storage extends Storage {
    * Iterate over all files in the bucket.
    */
   public async *flatList(prefix = ""): AsyncIterable<FileListResponse> {
+    if (prefix.includes(".") || prefix.includes(".."))
+      throw new WrongKeyPath(
+        new Error('Resource name contains bad components such as ".." or ".".'),
+        prefix
+      );
     let continuationToken: string | undefined;
     let hasContent = true;
 

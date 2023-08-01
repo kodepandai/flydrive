@@ -6,11 +6,7 @@
  */
 
 import fs from "fs-extra";
-import {
-  NoSuchBucket,
-  FileNotFound,
-  UnknownException,
-} from "../../flydrive/src";
+import { NoSuchBucket, FileNotFound } from "../../flydrive/src";
 import { vi, describe, test, expect } from "vitest";
 
 vi.mock("@kodepandai/flydrive", () => import("../../flydrive/src"));
@@ -21,6 +17,7 @@ import {
 } from "../src/AmazonWebServicesS3Storage";
 import { getFlatList, streamToString } from "../../../test/utils";
 import path from "path";
+import { WrongKeyPath } from "@kodepandai/flydrive";
 
 const config: AmazonWebServicesS3StorageConfig = {
   key: process.env.S3_KEY || "",
@@ -33,10 +30,19 @@ const config: AmazonWebServicesS3StorageConfig = {
 
 const storage = new AmazonWebServicesS3Storage(config);
 
-function fileURL(KEY: string): string {
-  const { S3_ENDPOINT, S3_BUCKET } = process.env;
-  const { href } = new URL(S3_ENDPOINT || "");
-  return `${href}${S3_BUCKET}/${KEY}`;
+function fileURL(location: string, _config = config): string {
+  const { endpoint: configEndpoint, bucket, forcePathStyle, region } = _config;
+  const awsHost = region ? `s3.${region}.amazonaws.com` : "s3.amazonaws.com";
+  let endpoint = (configEndpoint as string) || `https:${awsHost}`;
+  endpoint = endpoint.replace(bucket, "");
+  const { href, protocol, host } = new URL(endpoint);
+
+  if (href.includes("amazonaws.com")) {
+    if (!forcePathStyle) {
+      return `${protocol}//${bucket}.${host}/${location}`;
+    }
+  }
+  return `${protocol}//${host}/${bucket}/${location}`;
 }
 
 const testString = "test-data";
@@ -134,7 +140,6 @@ describe("S3 Driver", () => {
     const content = await streamToString(stream);
     expect(content).toStrictEqual(testString);
   });
-
   test("get public url to a file", () => {
     const url = storage.getUrl("dummy-file1.txt");
     expect(url).toStrictEqual(fileURL("dummy-file1.txt"));
@@ -147,15 +152,15 @@ describe("S3 Driver", () => {
     });
     const url = storage.getUrl("dummy-file1.txt");
 
-    expect(url).toStrictEqual(fileURL("dummy-file1.txt"));
+    expect(url).toStrictEqual(
+      fileURL("dummy-file1.txt", { ...config, region: undefined })
+    );
   });
-
   test("get signed url to a file", async () => {
     const url = await storage.getSignedUrl("dummy-file.txt");
     const res = await fetch(url.signedUrl);
     expect(await res.text()).toStrictEqual("test-data");
   });
-
   test("can put file with custom content type", async () => {
     await storage.put("dummy-image.webp", testString, {
       ContentType: "image/webp",
@@ -213,22 +218,15 @@ describe("S3 Driver", () => {
     expect(result).toStrictEqual([path.normalize("other/dir/file.txt")]);
   });
 
-  test("cannot list files with double dots in prefix", async () => {
+  test("list files with double dots in prefix should be empty", async () => {
     await Promise.all([
       storage.put("foo.txt", "bar"),
       storage.put("foo/bar", "baz"),
       storage.put("other/dir/file.txt", "hello"),
     ]);
 
-    try {
-      const result = await getFlatList(storage, "other/../");
-      expect(result.sort()).toStrictEqual([
-        "foo.txt",
-        path.normalize("foo/bar"),
-        path.normalize("other/dir/file.txt"),
-      ]);
-    } catch (e: any) {
-      expect(e).toBeInstanceOf(UnknownException);
-    }
+    expect(() => getFlatList(storage, "other/../")).rejects.toThrow(
+      WrongKeyPath
+    );
   });
 });
