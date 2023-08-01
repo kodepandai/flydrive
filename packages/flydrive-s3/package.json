@@ -35,11 +35,11 @@
     "@aws-sdk/s3-request-presigner": "^3.360.0"
   },
   "peerDependencies": {
-    "@kodepandai/flydrive": "workspace:3.0.0-next"
+    "@kodepandai/flydrive": "3.0.0-next.1"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.357.0",
-    "@kodepandai/flydrive": "workspace:3.0.0-next",
+    "@kodepandai/flydrive": "3.0.0-next.1",
     "@types/fs-extra": "^9.0.7",
     "fs-extra": "^9.1.0"
   },

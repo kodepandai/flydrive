@@ -31,10 +31,10 @@
     "@google-cloud/storage": "^5.8.0"
   },
   "peerDependencies": {
-    "@kodepandai/flydrive": "workspace:3.0.0-next"
+    "@kodepandai/flydrive": "3.0.0-next.1"
   },
   "devDependencies": {
-    "@kodepandai/flydrive": "workspace:3.0.0-next",
+    "@kodepandai/flydrive": "3.0.0-next.1",
     "@lukeed/uuid": "^2.0.0"
   },
   "publishConfig": {
