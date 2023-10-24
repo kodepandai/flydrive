@@ -5,4 +5,9 @@ export default [
     beforeBuild: [del({ targets: "dist/*" })],
     declaration: process.env.NODE_ENV == "production",
   }),
+
+  ...bundleTs(["src/index.ts"], {
+    beforeBuild: [del({ targets: "dist/*" })],
+    declaration: process.env.NODE_ENV == "production",
+  }),
 ];
