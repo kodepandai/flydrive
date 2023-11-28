@@ -5,7 +5,7 @@
  * @copyright Slynova - Romain Lanz <romain.lanz@slynova.ch>
  */
 
-import * as fse from "fs-extra";
+import fse from "fs-extra";
 import { promises as fs } from "fs";
 import { dirname, join, resolve, relative, sep } from "path";
 import Storage from "./Storage";
