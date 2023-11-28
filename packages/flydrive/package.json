@@ -5,17 +5,17 @@
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
   "main": "dist/cjs/index.cjs",
-  "types": "dist/esm/index.d.ts",
+  "types": "dist/esm/index.d.mts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
-      "types": "./dist/esm/index.d.ts",
-      "require": "./dist/cjs/index.cjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts",
+      "require": "./dist/index.js"
     },
     "./exceptions/*": {
-      "import": "./dist/esm/exceptions/index.mjs",
-      "types": "./dist/esm/exceptions/index.d.ts",
-      "require": "./dist/cjs/exceptions/index.cjs"
+      "import": "./dist/exceptions/index.mjs",
+      "types": "./dist/exceptions/index.d.mts",
+      "require": "./dist/exceptions/index.js"
     },
     "./dist/*": "./dist/*"
   },
@@ -41,7 +41,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "NODE_ENV=production rollup -c",
+    "build": "tsup",
     "test": "vitest"
   },
   "dependencies": {

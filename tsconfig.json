@@ -11,12 +11,10 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {},
     "resolveJsonModule": true,
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types"]
   },
   "exclude": ["**/test/*", "**/dist/*", "**/node_modules/*"]
 }
