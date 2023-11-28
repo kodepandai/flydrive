@@ -230,7 +230,7 @@ export class GoogleCloudStorage extends Storage {
         return { raw: undefined };
       }
 
-      const result = await file.save(content, { resumable: false });
+      const result = file.save(content as Buffer|string, { resumable: false });
       return { raw: result };
     } catch (e: any) {
       throw handleError(e, location);

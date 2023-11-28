@@ -4,18 +4,18 @@
   "description": "Flexible and Fluent way to manage storage in Node.js.",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
-  "main": "dist/cjs/index.cjs",
-  "types": "dist/esm/index.d.mts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.mts",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
     },
     "./exceptions/*": {
-      "import": "./dist/exceptions/index.mjs",
-      "types": "./dist/exceptions/index.d.mts",
-      "require": "./dist/exceptions/index.js"
+      "import": "./dist/exceptions/index.js",
+      "types": "./dist/exceptions/index.d.ts",
+      "require": "./dist/exceptions/index.cjs"
     },
     "./dist/*": "./dist/*"
   },
@@ -60,5 +60,6 @@
   },
   "bugs": {
     "url": "https://github.com/KodePandai/flydrive/issues"
-  }
+  },
+  "type": "module"
 }

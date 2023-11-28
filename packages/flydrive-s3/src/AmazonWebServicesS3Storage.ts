@@ -282,7 +282,7 @@ export class AmazonWebServicesS3Storage extends Storage {
   ): Promise<Response> {
     const command = new PutObjectCommand({
       Key: location,
-      Body: content,
+      Body: content as Buffer | string,
       Bucket: this.$bucket,
       ...option,
     });

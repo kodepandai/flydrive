@@ -4,8 +4,16 @@
   "description": "Google Cloud Storage driver for @kodepandai/flydrive",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
-  "main": "dist/index.mjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
+    },
+    "./dist/*": "./dist/*"
+  },
   "keywords": [
     "storage",
     "filesystem",
@@ -25,7 +33,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "NODE_ENV=production rollup -c"
+    "build": "tsup"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.8.0"

@@ -4,13 +4,13 @@
   "description": "AWS S3 driver for @kodepandai/flydrive",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
-  "main": "dist/cjs/index.cjs",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
-      "types": "./dist/esm/index.d.ts",
-      "require": "./dist/cjs/index.cjs"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
     },
     "./dist/*": "./dist/*"
   },
@@ -35,7 +35,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "NODE_ENV=production rollup -c",
+    "build": "tsup",
     "test": "vitest"
   },
   "dependencies": {

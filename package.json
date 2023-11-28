@@ -2,8 +2,6 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "build": "npm run clean && NODE_ENV=production rollup -c",
-    "clean": "rm -rf packages/flydrive/build & rm -rf packages/flydrive-s3/build & rm -rf packages/flydrive-gcs/build",
     "lint": "prettier --check --plugin-search-dir=. . && eslint . --fix",
     "prettier": "prettier --write --plugin-search-dir=. .",
     "format": "npm run prettier && npm run lint",
@@ -11,7 +9,6 @@
     "sync": "syncpack fix-mismatches"
   },
   "devDependencies": {
-    "@lunoxjs/build": "2.0.0-next",
     "@microsoft/api-extractor": "^7.38.3",
     "@types/node": "^14.14.31",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
@@ -19,8 +16,6 @@
     "dotenv": "^8.2.0",
     "eslint": "^7.20.0",
     "prettier": "^2.5.1",
-    "rollup": "^3.25.2",
-    "rollup-plugin-delete": "^2.0.0",
     "syncpack": "^10.9.3",
     "ts-node": "^9.1.1",
     "tslib": "^2.3.1",
