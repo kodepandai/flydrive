@@ -3,7 +3,7 @@ import { defineConfig } from "tsup";
 export default defineConfig([
   {
     entry: [
-      "src/index.ts", "src/AmazonWebServiceS3Storage.ts"
+      "src/index.ts", "src/AmazonWebServicesS3Storage.ts"
     ],
     format: "esm",
     target: "es2022",
@@ -14,7 +14,7 @@ export default defineConfig([
   },
   {
     entry: [
-      "src/index.ts", "src/AmazonWebServiceS3Storage.ts"
+      "src/index.ts", "src/AmazonWebServicesS3Storage.ts"
     ],
     format: "cjs",
     target: "es2022",
