@@ -1,6 +1,6 @@
 {
   "name": "@kodepandai/flydrive-gcs",
-  "version": "3.0.0-next.4",
+  "version": "3.0.0",
   "description": "Google Cloud Storage driver for @kodepandai/flydrive",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
@@ -39,10 +39,10 @@
     "@google-cloud/storage": "^5.8.0"
   },
   "peerDependencies": {
-    "@kodepandai/flydrive": "3.0.0-next.4"
+    "@kodepandai/flydrive": "3.0.0"
   },
   "devDependencies": {
-    "@kodepandai/flydrive": "3.0.0-next.4",
+    "@kodepandai/flydrive": "3.0.0",
     "@lukeed/uuid": "^2.0.0"
   },
   "publishConfig": {

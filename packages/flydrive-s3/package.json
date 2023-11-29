@@ -1,6 +1,6 @@
 {
   "name": "@kodepandai/flydrive-s3",
-  "version": "3.0.0-next.4",
+  "version": "3.0.0",
   "description": "AWS S3 driver for @kodepandai/flydrive",
   "homepage": "https://github.com/KodePandai/flydrive#readme",
   "license": "MIT",
@@ -43,11 +43,11 @@
     "@aws-sdk/s3-request-presigner": "^3.360.0"
   },
   "peerDependencies": {
-    "@kodepandai/flydrive": "3.0.0-next.4"
+    "@kodepandai/flydrive": "3.0.0"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.357.0",
-    "@kodepandai/flydrive": "3.0.0-next.4",
+    "@kodepandai/flydrive": "3.0.0",
     "@types/fs-extra": "^9.0.7",
     "fs-extra": "^9.1.0"
   },
